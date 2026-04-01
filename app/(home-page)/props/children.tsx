@@ -37,7 +37,7 @@ export default function Children({item}:any) {
                     <h2>{el.service_Name}</h2>
                     <h1>{el.service_Description}</h1>
                     <h3>Qty: {el.quantity}</h3>
-                    <p>💰 {el.price}</p>
+                    <p> {el.price}</p>
 
                     <div className="flex gap-4 mt-2">
                         <ViewModal service={el} />
