@@ -65,7 +65,7 @@ const DashboardHeader = () => {
         </div>
         
         <div className="absolute top-0 right-0">
-            <div className="h-3 w-3 bg-red-500 rounded-full"></div>
+            <div className="h-3 w-3 bg-red-500 rounded-full">n</div>
         </div>
        </div>
       </div>

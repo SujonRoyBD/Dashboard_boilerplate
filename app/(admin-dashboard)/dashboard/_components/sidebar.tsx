@@ -50,7 +50,7 @@ export default function DashboardSidebar() {
               </div>
             </div>
 
-            {/* ❌ Close button (mobile only) */}
+            {/*  Close button (mobile only) */}
             <div className="md:hidden cursor-pointer">
               <SidebarTrigger>
                 <X className="h-5 w-5 text-muted-foreground" />
