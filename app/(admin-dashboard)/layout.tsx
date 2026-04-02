@@ -9,22 +9,22 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
-        <DashboardSidebar />
+  <div className="flex min-h-screen w-full">
+  <DashboardSidebar />
 
-        <div className="flex flex-1 flex-col">
-          {/* Header */}
-          <header className="flex h-25 items-center gap-4 border-b pr-5 pl-4 ">
-            <SidebarTrigger className="cursor-pointer"/>
-            <DashboardHeader/>
-          </header>
+  <div className="flex flex-1 flex-col min-w-0">
+    {/* Header */}
+    <header className="flex h-25 items-center gap-4 border-b pr-5 pl-4 ">
+      <SidebarTrigger className="cursor-pointer" />
+      <DashboardHeader />
+    </header>
 
-          {/* Content */}
-          <main className="flex-1 bg-muted/40 p-6">
-            {children}
-          </main>
-        </div>
-      </div>
+    {/* Content */}
+    <main className="flex-1 bg-muted/40 p-2 overflow-auto">
+      {children}
+    </main>
+  </div>
+</div>
     </SidebarProvider>
   );
 }

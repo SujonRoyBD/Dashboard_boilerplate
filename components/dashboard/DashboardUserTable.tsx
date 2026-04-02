@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import DynamicTable from "@/components/reusable/DynamicTable";
+import Link from "next/link";
 
 export default function DashboardUserTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,24 +60,7 @@ export default function DashboardUserTable() {
       additional_information: "Requested brochure",
       createdAt: new Date(2026, 2, 9).toISOString(),
     },
-    // More dummy users for pagination
-    // ...Array.from({ length: 20 }, (_, i) => ({
-    //   id: i + 6,
-    //   full_name: `User ${i + 6}`,
-    //   email_address: `user${i + 6}@example.com`,
-    //   mobile_number: `0170000${i + 6}`,
-    //   enquiry_type: i % 2 === 0 ? "general" : "support",
-    //   status:
-    //     i % 4 === 0
-    //       ? "Pre Application"
-    //       : i % 4 === 1
-    //       ? "Applied"
-    //       : i % 4 === 2
-    //       ? "Pending"
-    //       : "Inactive",
-    //   additional_information: "Additional info here",
-    //   createdAt: new Date(2026, 2, i + 10).toISOString(),
-    // })),
+
   ];
 
   // Pagination
@@ -135,6 +119,28 @@ export default function DashboardUserTable() {
           day: "numeric",
         }),
     },
+     {
+  label: "Action",
+  accessor: "id",
+  width: "150px",
+ formatter: (_value: any, row: any) => (
+  <div className="flex gap-2">
+    <Link href={`/user/${row.id}`} className="text-xs underline text-blue-600">
+      View
+    </Link>
+    <Link href={`/user/edit/${row.id}`} className="text-xs underline text-green-600">
+      Edit
+    </Link>
+    <button
+      onClick={() => alert("Delete " + row.full_name)}
+      className="text-xs underline text-red-600"
+    >
+      Delete
+    </button>
+  </div>
+),
+},
+ 
   ];
 
   return (
@@ -153,6 +159,9 @@ export default function DashboardUserTable() {
         totalItems={totalItems}
         onPageChange={setCurrentPage}
         setItemsPerPage={setItemsPerPage}
+  //         onView={(row) => alert("View " + row.full_name)}
+  // onEdit={(row) => alert("Edit " + row.full_name)}
+  // onDelete={(row) => alert("Delete " + row.full_name)}
         noDataMessage="No users found"
         loading={false}
       />

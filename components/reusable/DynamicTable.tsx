@@ -19,6 +19,7 @@ interface DynamicTableProps {
   itemsPerPage: number;
   onPageChange: (page: number) => void;
   onView?: (row: any) => void;
+  onEdit?: (row: any) => void;
   onDelete?: (id: any) => void;
   noDataMessage?: string;
   totalpage: number;
@@ -39,6 +40,7 @@ export default function DynamicTable({
   onPageChange,
   loading,
   onView,
+  onEdit,
   totalpage,
   onDelete,
   noDataMessage = "No data found !.",
@@ -48,114 +50,89 @@ export default function DynamicTable({
   renderFooter,
 }: DynamicTableProps) {
   return (
-    <div>
-      {/* Table Wrapper with Border & Radius */}
-      <div className={`rounded-t-md ${border ? "border border-gray-200" : ""}`}>
-        <div className={` overflow-auto bg-white ${border ? "p-2" : ""}`}>
-          <table
-            className={`min-w-[1000px] w-full text-left bg-whiteColor  ${border ? "p-2" : ""}`}
+ <div className="overflow-x-auto w-full scrollbar-thin scrollbar-thumb-gray-400 ">
+ <div className="border rounded-lg overflow-x-auto w-full scrollbar-thin scrollbar-thumb-gray-400">
+   <div className="inline-block min-w-full ">
+    <table className="min-w-max w-full text-left border-collapse ">
+    <thead className="sticky top-0 bg-blackColor">
+      <tr>
+        {columns.map((col, index) => (
+          <th
+            key={index}
+            style={{ width: col.width || "auto" }}
+            className={`px-4 py-3 text-sm font-medium ${
+              index === 0
+                ? "rounded-l-lg"
+                : index === columns.length - 1
+                ? "rounded-r-lg"
+                : ""
+            }`}
           >
-            <thead className=" sticky top-0  rounded-2xl! overflow-hidden  p-2">
-              <tr className="">
-                {columns.map((col:any, index:any) => (
-                  <th
-                    key={index}
-                    style={{ width: col.width || "auto" }}
-                    className={`${index == 0 ? "rounded-l-lg" : index === columns.length - 1 ? "rounded-r-lg" : ""} px-4! bg-blackColor   py-5! text-sm font-medium border-b  `}
+            {col.label}
+          </th>
+        ))}
+        {(onView || onDelete) && <th className="px-4 py-3">Action</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {data?.length > 0 ? (
+        data.map((row, i) => (
+          <tr key={i} className="border-t border-gray-100">
+            {columns.map((col, idx) => (
+              <td
+                key={idx}
+                style={{ width: col.width || "auto" }}
+                className="px-4 py-3 text-sm text-[#4a4c56]"
+              >
+                {col.formatter
+                  ? col.formatter(row[col.accessor], row)
+                  : row[col.accessor]}
+              </td>
+            ))}
+            {(onView || onDelete) && (
+              <td className="px-4 py-3 flex gap-2 items-center">
+                {onView && (
+                  <span
+                    className="text-xs underline cursor-pointer text-blue-600"
+                    onClick={() => onView(row)}
                   >
-                    {col.label}
-                  </th>
-                ))}
-                {(onView || onDelete) && (
-                  <th>
-                    <div className="px-4 border border-red-600  rounded-2xl py-3 text-sm font-medium text-[#4a4c56] border-b  bg-neutral-50">
-                      Action
-                    </div>
-                  </th>
+                    View
+                  </span>
                 )}
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td
-                    colSpan={columns.length + (onView || onDelete ? 1 : 0)}
-                    className="px-4 py-10 text-center text-[#4a4c56] text-sm"
+                {onEdit && (
+                  <span
+                    className="text-xs underline cursor-pointer text-green-600"
+                    onClick={() => onEdit(row)}
                   >
-                    <Loader />
-                  </td>
-                </tr>
-              ) : data?.length > 0 ? (
-                data.map((row, i) => (
-                  <tr key={i} className="border-t border-gray-100">
-                    {columns.map((col, idx) => (
-                      <td
-                        key={idx}
-                        style={{ width: col.width || "auto" }}
-                        className="px-4 py-3 text-sm text-[#4a4c56]"
-                      >
-                        {col.formatter
-                          ? col.formatter(
-                              row[col.accessor],
-                              row,
-                              (currentPage - 1) * itemsPerPage + i,
-                            )
-                          : row[col.accessor]}
-                      </td>
-                    ))}
-                    {(onView || onDelete) && (
-                      <td className="px-4 py-3 flex gap-4 items-center">
-                        {onView && (
-                          <span
-                            className="text-xs underline text-[#4a4c56]  cursor-pointer"
-                            onClick={() => onView(row)}
-                          >
-                            View details
-                          </span>
-                        )}
-                        {onDelete && (
-                          <Image
-                            onClick={() => onDelete(row.id)}
-                            src="/dashboard/icon/delete.svg"
-                            alt="delete"
-                            width={16}
-                            height={16}
-                            className="cursor-pointer"
-                          />
-                        )}
-                      </td>
-                    )}
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={columns.length + (onView || onDelete ? 1 : 0)}
-                    className="px-4 py-10 text-center text-[#4a4c56] text-sm"
+                    Edit
+                  </span>
+                )}
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(row.id)}
+                    className="text-xs underline text-red-600"
                   >
-                    {error ? (
-                      <p className="text-red-500 text-xl capitalize font-semibold">
-                        {" "}
-                        {error + " " + "please login again"}
-                      </p>
-                    ) : (
-                      <p className="text-xl text-gray-500 capitalize font-semibold">
-                        {noDataMessage}
-                      </p>
-                    )}
-                  </td>
-                </tr>
-              )}
-              {/* data rows */}
-            </tbody>
-            {renderFooter && (
-              <tfoot>
-                {renderFooter(columns.length + (onView || onDelete ? 1 : 0))}
-              </tfoot>
+                    Delete
+                  </button>
+                )}
+              </td>
             )}
-          </table>
-        </div>
-      </div>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td
+            colSpan={columns.length + (onView || onDelete ? 1 : 0)}
+            className="px-4 py-10 text-center text-gray-500 text-sm"
+          >
+            No data found
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+ </div>
       <div>
         <PaginationPage
           totalPages={totalpage}
