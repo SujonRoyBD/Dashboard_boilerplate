@@ -4,6 +4,7 @@ import { useState } from "react";
 import DynamicTable from "@/components/reusable/DynamicTable";
 import Link from "next/link";
 import { useDeleteUserMutation, useGetUserQuery } from "@/redux/features/auth/authApi";
+import DialogDemo from "@/components/dashboard/UserTable/updateModal";
 
 export default function DashboardUserTable() {
   const { data, error, isLoading } = useGetUserQuery({});
@@ -29,6 +30,8 @@ const handleDelete = async (userId: any) => {
 
 
   // const userList = data?.data || [];
+
+
 
 const users = data?.map((user: any) => ({
   id: user.id ,
@@ -102,12 +105,9 @@ const users = data?.map((user: any) => ({
           >
             View
           </Link>
-          <Link
-            href={`/user/edit/${row.id}`}
-            className="text-xs underline text-green-600"
-          >
-            Edit
-          </Link>
+         
+            <DialogDemo userId={row.id} users={users} />
+       
           <button
             onClick={() => handleDelete(row.id)}
             className="text-xs underline text-red-600"
