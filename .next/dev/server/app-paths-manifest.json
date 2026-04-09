@@ -1,0 +1,6 @@
+{
+  "/(home-page)/cartPage/page": "app/(home-page)/cartPage/page.js",
+  "/(home-page)/page": "app/(home-page)/page.js",
+  "/(home-page)/practise/[id]/page": "app/(home-page)/practise/[id]/page.js",
+  "/(home-page)/practise/page": "app/(home-page)/practise/page.js"
+}

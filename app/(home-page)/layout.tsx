@@ -1,3 +1,5 @@
+import Navbar from "@/components/shared/Navbar";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -26,7 +28,7 @@ export default function RootLayout({
             lang="en"
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
-            <body className="min-h-full flex flex-col">{children}</body>
+            <body className="min-h-full flex flex-col"> <Toaster position="top-center"/> <Navbar/>  {children}</body>
         </html>
     );
 }
